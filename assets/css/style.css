@@ -21,3 +21,8 @@ section {
     margin: 75px auto;
     clear: both;
 }
+
+.myblock {
+    width: 80%;
+    margin: 0 auto;
+}

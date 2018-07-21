@@ -5,7 +5,7 @@
   <head>
 
     <meta charset="UTF-8">
-    <title>CoderBay</title>
+    <title>Train Schedule</title>
 
     <!-- Bootstrap CDN-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -21,15 +21,15 @@
 
   <body>
 
+        <div class="jumbotron" style="border:none; background: black;">
+                <h1 class="text-center">Jackson Square Train Station</h1>
+                <h3 class="text-center">"Daily Schedule"</h3>
+         </div>
     <section class="container">
-
-      <br>
+        <div class="row">
 
       <!-- Jumbotron Title -->
-      <div class="jumbotron" style="border:none; background: black;">
-        <h1 class="text-center">Jackson Square Train Station</h1>
-        <h3 class="text-center">"Daily Schedule"</h3>
-      </div>
+      <div class ="col-3">
       <div class="card-body">
 
         <!-- Sign-up Form (note the various input "types")-->
@@ -50,13 +50,12 @@
             <label for="min-input">Frequency (min):</label>
             <input class="form-control" id="min-input" type="text"></textarea>
           </div>
-          <button class="btn btn-default" id="add-train" type="submit">Submit</button>
+          <button class="btn btn-block myblock" id="add-train" type="submit">Submit</button>
         </form>
-        <br>
-        <br>
-        <br>
-        
-        <table class="table" style="text-align:center;border: 2px solid black;background: black;">
+        </div>
+    </div>
+        <div class ="col-9 align-self-center table-responsive">
+        <table class="table table-striped table-dark table-hover" style="text-align:center;border: 2px solid black;margin-top:25px;">
             <thead>
               <tr>
                 <th scope="col">Train Name</th>
@@ -70,8 +69,12 @@
             <tbody>
             </tbody>
           </table>
+        </div>
       </div>
-    
+      <div class="row" id="gifrow">
+
+      </div>
+    </div>
     </section>
 
     <!-- Script -->
