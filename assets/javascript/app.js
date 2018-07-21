@@ -32,11 +32,9 @@ connectedRef.on("value", function(snap) {
   }
 });
 
-var giphyGifPos=0;
 function queryGiphy (cat) {
 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-    cat + "&api_key=dc6zaTOxFJmzC&limit=1&offset=" + giphyGifPos;
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q="+cat+"&api_key=dc6zaTOxFJmzC&limit=1";
 
     $.ajax({
         url: queryURL,
@@ -44,15 +42,12 @@ function queryGiphy (cat) {
         }).then(function(response) {
         console.log(response);
         // write all the gifs that were returned 
-        for (i=0;i<response.data.length;i++){
-            // increment the spot in the database list 
-            giphyGifPos++;
-            // Increment the total search length by the number returned
-            // Write a new Gif card to window with the gif checkbox and fav buttons
-            var newGifDiv = $('<div class="card gif-card" style="width:100%;">');
-            newGifDiv.append('<img src="'+response.data[0].images.original.url+'" frameBorder="0" class = "card-img-top my-img" data-animate="'+response.data[0].images.original.url+'" data-still="'+response.data[0].images.original_still.url+'" data-state="animate" allowFullScreen></iframe>');
-            $("#gifrow").append(newGifDiv);
-        }
+        
+        // Write a new Gif card to window with the gif checkbox and fav buttons
+        var newGifDiv = $('<div class="card gif-card" style="width:100%;">');
+        newGifDiv.append('<img src="'+response.data[0].images.original.url+'" frameBorder="0" class = "card-img-top my-img" data-animate="'+response.data[0].images.original.url+'" data-still="'+response.data[0].images.original_still.url+'" data-state="animate" allowFullScreen></iframe>');
+        $("#gifrow").append(newGifDiv);
+        
     });            
 }
 queryGiphy("train");
