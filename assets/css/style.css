@@ -10,6 +10,7 @@ body {
     background: silver;
 }
 
+/* Main section */
 section {
     border: 4px solid black;
     background: lightslategrey;
@@ -22,6 +23,7 @@ section {
     clear: both;
 }
 
+/* Submit Button Formatting */
 .myblock {
     width: 80%;
     margin: 0 auto;

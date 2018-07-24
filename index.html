@@ -21,61 +21,72 @@
   </head>
 
   <body>
-
-        <div class="jumbotron" style="border:none; background: black;">
-                <h1 class="text-center">Jackson Square Train Station</h1>
-                <h3 class="text-center">"Daily Schedule"</h3>
-         </div>
-    <section class="container">
-        <div class="row">
-
       <!-- Jumbotron Title -->
-      <div class ="col-3">
-      <div class="card-body">
-
-        <!-- Sign-up Form (note the various input "types")-->
-        <form role="form">
-          <div class="form-group row">
-            <label for="name-input">Train Name:</label>
-            <input class="form-control" id="name-input" type="text">
-          </div>
-          <div class="form-group row">
-            <label for="dest-input">Destination:</label>
-            <input class="form-control" id="dest-input" type="text">
-          </div>
-          <div class="form-group row">
-            <label for="time-input">First Train Time (HH:mm):</label>
-            <input class="form-control" id="time-input" type="time">
-          </div>
-          <div class="form-group row">
-            <label for="min-input">Frequency (min):</label>
-            <input class="form-control" id="min-input" type="text"></textarea>
-          </div>
-          <button class="btn btn-block myblock" id="add-train" type="submit">Submit</button>
-        </form>
+    <div class="jumbotron" style="border:none; background: black;">
+        <h1 class="text-center">Jackson Square Train Station</h1>
+        <h3 class="text-center">"Daily Schedule"</h3>
+        <br>
+        <!-- Display the current time -->
+        <div>
+          <h3 id="nowTime" class="text-center"></h3>
         </div>
     </div>
-        <div class ="col-9 align-self-center table-responsive">
-        <table class="table table-striped table-dark table-hover" style="text-align:center;border: 2px solid black;margin-top:25px;">
-            <thead>
-              <tr>
-                <th scope="col">Train Name</th>
-                <th scope="col">Destination</th>
-                <th scope="col">1st Train</th>
-                <th scope="col">Frequency (min)</th>
-                <th scope="col">Next Arrival</th>
-                <th scope="col">Minutes Away</th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="row" id="gifrow">
+    
+    <!-- Main Container -->
+    <section class="container">
+        <!-- A row for the train input and schedule -->
+        <div class="row justify-content-center">
+          <!-- The first column for the form -->
+          <div class ="col-8 col-md-3">
+            <!-- The new train input form -->
+            <div class="card-body">
 
-      </div>
-    </div>
+              <!-- Sign-up Form (note the various input "types")-->
+              <form role="form">
+                <div class="form-group row">
+                  <label for="name-input">Train Name:</label>
+                  <input class="form-control" id="name-input" type="text">
+                </div>
+                <div class="form-group row">
+                  <label for="dest-input">Destination:</label>
+                  <input class="form-control" id="dest-input" type="text">
+                </div>
+                <div class="form-group row">
+                  <label for="time-input">First Train Time (HH:mm):</label>
+                  <input class="form-control" id="time-input" type="time">
+                </div>
+                <div class="form-group row">
+                  <label for="min-input">Frequency (min):</label>
+                  <input class="form-control" id="min-input" type="text"></textarea>
+                </div>
+                <button class="btn btn-block myblock" id="add-train" type="submit">Submit</button>
+              </form>
+            </div>
+          </div>
+          
+          <!-- A second column for the train table -->
+          <div class ="col-12 col-md-9 align-self-center table-responsive">
+              <!-- Train table with all current trains updated every minute -->
+              <table class="table table-striped table-dark table-hover" style="text-align:center;border: 2px solid black;margin-top:25px;">
+                <thead>
+                  <tr>
+                    <th scope="col">Train Name</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">1st Train</th>
+                    <th scope="col">Frequency (min)</th>
+                    <th scope="col">Next Arrival</th>
+                    <th scope="col">Minutes Away</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+          </div>
+        </div>
+        <!-- A giphy from API -->
+        <div class="row" id="gifrow">
+
+        </div>
     </section>
 
     <!-- Script -->
