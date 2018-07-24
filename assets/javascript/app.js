@@ -7,7 +7,7 @@ var config = {
     storageBucket: "projectcodingcamp.appspot.com",
     messagingSenderId: "277978229879"
   };
-
+  
 // Inititalize the database
 firebase.initializeApp(config);
 
@@ -95,6 +95,24 @@ $("#add-train").on("click", function(event) {
     $('input').val("");
 });
 
+$("#kill-train").on("click", function(event) {
+  event.preventDefault();
+  
+  // Grab all the train info from the user inputs and assign to global train variables
+  del_name = $("#name-input").val().trim();
+  
+  // Code for the push and then calling the database function for printing all current trains
+  jjdb.orderByChild('Train').equalTo(del_name)
+    .once('value').then(function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+        //remove each child
+        jjdb.child(childSnapshot.key).remove();
+    });
+});
+  // Reset the input fields
+  $('input').val("");
+});
+
 // A debugging f(x) for console logging each current database train object
 function consoleTrain (child){
     console.log(child.val().Train);
@@ -156,7 +174,8 @@ var intervalId;
 
 // A f(x) for setting event child added handler to the database   
 function readFromDb () {
-  jjdb.on("child_added", function(snapshot) {
+
+  jjdb.orderByChild('Destination').on("child_added", function(snapshot) {
       
   // Log everything that's coming out of each train child snapshot
       consoleTrain(snapshot);
@@ -184,3 +203,7 @@ $("#nowTime").text(moment().format("MMMM Do YYYY HH:mm:ss"));
 setInterval(function() {
     $("#nowTime").text(moment().format("MMMM Do YYYY HH:mm:ss"));
 },1000);
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
