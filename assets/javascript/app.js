@@ -54,8 +54,8 @@ function queryGiphy (cat) {
         
     });            
 }
-// Call the giphy function and pass it the train search
-queryGiphy("train");
+// Call the giphy function and pass ita specific train search
+queryGiphy("train+midnight");
 
 // Initialize the train data to empty at page load
 var name = "";
