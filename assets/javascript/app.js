@@ -45,7 +45,6 @@ function queryGiphy (cat) {
         url: queryURL,
         method: "GET"
         }).then(function(response) {
-        console.log(response);
         
         // Write a new Gif card to window with the returned gif attached
         var newGifDiv = $('<div class="card gif-card" style="width:100%;">');
@@ -68,7 +67,7 @@ var numTrains = 0;
 
 // A f(x) for pushing each user inputed train and its data to the database
 function makeTrain () {
-  jjdb.push({
+  jjdb.child(name).set ({
       Train: name,
       Destination: dest,
       StartTime: time,
@@ -90,16 +89,75 @@ $("#add-train").on("click", function(event) {
 
     // Code for the push and then calling the database function for printing all current trains
     makeTrain();
-    readFromDb();
+    setTimeout(function(){
+      $("tbody").empty();
+      readFromDb();
+    },700);
+
     // Reset the input fields
     $('input').val("");
 });
 
-$("#kill-train").on("click", function(event) {
+$("tbody").on("click","#update", function(event) {
+    event.preventDefault();
+    
+    // Grab all the train info from the user inputs and assign to global train variables
+    var update_Name = $(this).attr("data-name");
+    var update_id = update_Name.replace(/\s+/g, '');
+    
+    console.log(update_Name);
+    console.log(update_id);
+
+    var newName = "";
+    var newDest = "";
+    var newTime = 0;
+    var newRawfreq = "";
+    
+    if ($(this).attr("update-activated")=="false") {
+      
+      $("#"+update_id+" td:nth-child(1)").empty().append('<input class="form-control" id="update-name-input" style="width:70%;margin:0 auto;" type="text">');
+      $("#"+update_id+" td:nth-child(2)").empty().append('<input class="form-control" id="update-dest-input" style="width:70%;margin:0 auto;" type="text">');
+      $("#"+update_id+" td:nth-child(3)").empty().append('<input class="form-control" id="update-time-input" type="time">');
+      $("#"+update_id+" td:nth-child(4)").empty().append('<input class="form-control" id="update-min-input" style="width:70%;margin:0 auto;" type="text">');
+      $("#"+update_id+" td:nth-child(5)").empty();
+      $("#"+update_id+" td:nth-child(6)").empty();
+      $(this).attr("update-activated","true");
+    }
+
+    else {
+      newName = $("#update-name-input").val().trim();
+      newDest = $("#update-dest-input").val().trim();
+      newTime = $("#update-time-input").val();
+      console.log(newTime);
+      newRawfreq = $("#update-min-input").val().trim();
+          
+      if (!(newName == "")) {
+        jjdb.orderByChild('Train').equalTo(update_Name)
+        .once('value').then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+              jjdb.child(childSnapshot.key).set  ({
+                Train: newName,
+                Destination: newDest,
+                StartTime: newTime,
+                Freq: newRawfreq,
+                dateAdded: firebase.database.ServerValue.TIMESTAMP
+              });
+            });
+        });
+      }
+      setTimeout(function(){
+        $("tbody").empty();
+        readFromDb();
+      },1200);
+    }
+  });
+
+$("tbody").on("click","#cancel", function(event) {
   event.preventDefault();
   
   // Grab all the train info from the user inputs and assign to global train variables
-  del_name = $("#name-input").val().trim();
+  var del_name = $(this).attr("data-name");
+  console.log(del_name);
   
   // Code for the push and then calling the database function for printing all current trains
   jjdb.orderByChild('Train').equalTo(del_name)
@@ -108,9 +166,12 @@ $("#kill-train").on("click", function(event) {
         //remove each child
         jjdb.child(childSnapshot.key).remove();
     });
-});
-  // Reset the input fields
-  $('input').val("");
+  });
+  $(".show").remove();
+  setTimeout(function(){
+    $("tbody").empty();
+    readFromDb();
+  },1200);
 });
 
 // A debugging f(x) for console logging each current database train object
@@ -124,13 +185,19 @@ function consoleTrain (child){
 
 // A f(x) for printing each train and its data to the html
 function printTrain (child,next,min) {
-    var tr = $("<tr>"+numTrains+"></tr>");
+    numTrains++;
+    console.log(numTrains);
+    var tr = $('<tr id="'+child.val().Train.replace(/\s+/g, '')+'"</tr>');
     tr.append("<td>"+child.val().Train+"</td>");
     tr.append("<td>"+child.val().Destination+"</td>");
     tr.append("<td>"+child.val().StartTime+"</td>");
     tr.append("<td>"+child.val().Freq+"</td>");
-    tr.append('<td id="next-train-'+numTrains+'">'+next+"</td>");
-    tr.append('<td id="mins-'+numTrains+'">'+min+"</td>");
+    tr.append('<td>'+next+"</td>");
+    tr.append('<td>'+min+"</td>");
+    var btnRow = $("<td></td>");
+    btnRow.append('<button id="update" type="button" class="btn btn-primary btn-sm" data-name="'+child.val().Train+'" update-activated = "false" style="margin:0 8px 4px 0;">Update</button>');
+    btnRow.append('<button id="cancel" type="button" class="btn btn-primary btn-sm" style="margin:0 0 4px 8px;" data-toggle="tooltip" data-placement="auto" data-trigger="hover" data-name="'+child.val().Train+'" title="Will take a sec">Cancel</button>');
+    tr.append(btnRow);
     $("tbody").append(tr);
 }
 
@@ -138,35 +205,21 @@ function printTrain (child,next,min) {
 function calcNextTrain (childSnap) {
 
   // Calculate the time elapsed from the first train time till now    
-    var totalMinAway = moment(moment()).diff(moment(childSnap.val().StartTime,"HH:mm"), "minutes");
+    var totalMinNow = moment(moment()).diff(moment(childSnap.val().StartTime,"HH:mm"), "minutes");
   // Convert the first train time to elapsed min from midnight
     var firstTime = moment(moment(childSnap.val().StartTime,"HH:mm")).diff(moment("00:00","HH:mm"),"minutes");
-  // Set a variable for the last time the train ran and set it to 0 based on the initial start train time 
-    var lastTime = 0;
+  
+  // Calculate the current mins away by subtracting the remainder of (time elapsed from start/frequency) from the interval
+    var curMinAway = childSnap.val().Freq-(totalMinNow % parseInt(childSnap.val().Freq));
 
-  // Increment the last time variable by the interval until it passes the time elapsed from start till now
-    while (lastTime<totalMinAway){
-      lastTime = lastTime + parseInt(childSnap.val().Freq);
-    }
+  // Set the next train time in minutes to the time elapsed from start plus mins away plus the first time it ran in mins
+    var nextTime = (totalMinNow+curMinAway) + firstTime;
 
-  // Set the next train time in minutes to the time elapsed from start (last time variable) plus the first time it ran in mins
-    var nextTime = lastTime + firstTime;
   // Convert the next train time to a moment of adding the next train time in mins to midnight  
     var nextTimeMom = moment("00:00","HH:mm").add(nextTime,'minutes').format('HH:mm');
 
-  // Set the last time in mins that the train ran by subtracting the interval  
-  lastTime=nextTime-parseInt(childSnap.val().Freq);
-
-  // Convert the last time in mins to correct HH:mm format for moment.js
-  var h =  parseInt(lastTime / 60);
-  var m = lastTime % 60;
-  var lastTimeMom = h+":"+m;
-
-  // Calculate the current mins away by subtracting the time time elapsed from last train till now from the interval
-  var curMinAway =childSnap.val().Freq-moment(moment()).diff((moment(lastTimeMom,"HH:mm")),"minutes");
-
   // Call the print all train data f(x) including our calculated next time in correct format and time away to html
-  printTrain(childSnap,nextTimeMom,curMinAway);
+    printTrain(childSnap,nextTimeMom,curMinAway);
 }
 
 // Set an interval variable
@@ -175,6 +228,7 @@ var intervalId;
 // A f(x) for setting event child added handler to the database   
 function readFromDb () {
 
+  numTrains=0;
   jjdb.orderByChild('Destination').on("child_added", function(snapshot) {
       
   // Log everything that's coming out of each train child snapshot
@@ -204,6 +258,7 @@ setInterval(function() {
     $("#nowTime").text(moment().format("MMMM Do YYYY HH:mm:ss"));
 },1000);
 
+$('body').tooltip({ selector: '[data-toggle="tooltip"]'});
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
   })

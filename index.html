@@ -33,7 +33,7 @@
     </div>
     
     <!-- Main Container -->
-    <section class="container">
+    <section class="container" style="width: 92%;max-width: 1960px;">
         <!-- A row for the train input and schedule -->
         <div class="row justify-content-center">
           <!-- The first column for the form -->
@@ -60,7 +60,6 @@
                   <input class="form-control" id="min-input" type="text">
                 </div>
                 <button class="btn btn-block myblock" id="add-train" type="submit">Submit</button>
-                <button class="btn btn-block myblock" id="kill-train" type="submit" data-toggle="tooltip" data-placement="right" title="Train Name: Will take a minute">Clear</button>
               </form>
             </div>
           </div>
@@ -77,6 +76,7 @@
                     <th scope="col">Frequency (min)</th>
                     <th scope="col">Next Arrival</th>
                     <th scope="col">Minutes Away</th>
+                    <th scope="col">Control</th>
                   </tr>
                 </thead>
                 <tbody>
