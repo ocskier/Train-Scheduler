@@ -195,7 +195,7 @@ function printTrain (child,next,min) {
     tr.append("<td>"+child.val().Freq+"</td>");
     tr.append('<td>'+next+"</td>");
     tr.append('<td>'+min+"</td>");
-    var btnRow = $("<td></td>");
+    var btnRow = $('<td style="width: 180px;"></td>');
     btnRow.append('<button id="update" type="button" class="btn btn-primary btn-sm" data-name="'+child.val().Train+'" update-activated = "false" style="margin:0 8px 4px 0;">Update</button>');
     btnRow.append('<button id="cancel" type="button" class="btn btn-primary btn-sm" style="margin:0 0 4px 8px;" data-toggle="tooltip" data-placement="auto" data-trigger="hover" data-name="'+child.val().Train+'" title="Will take a sec">Cancel</button>');
     tr.append(btnRow);
