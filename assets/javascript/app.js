@@ -53,7 +53,7 @@ function queryGiphy (cat) {
         
     });            
 }
-// Call the giphy function and pass ita specific train search
+// Call the giphy function and pass it a specific train search
 queryGiphy("train+midnight");
 
 // Initialize the train data to empty at page load
@@ -98,39 +98,44 @@ $("#add-train").on("click", function(event) {
     $('input').val("");
 });
 
+// Capture the update button click
 $("tbody").on("click","#update", function(event) {
     event.preventDefault();
     
-    // Grab all the train info from the user inputs and assign to global train variables
+    // Get the train name that user wants to update and remove spaces
     var update_Name = $(this).attr("data-name");
     var update_id = update_Name.replace(/\s+/g, '');
     
     console.log(update_Name);
     console.log(update_id);
 
+    // Make a new set of local variables for train info and default to blank 
     var newName = "";
     var newDest = "";
     var newTime = 0;
     var newRawfreq = "";
     
+    // Check to see if the train is currently being updated
     if ($(this).attr("update-activated")=="false") {
-      
+      // If not empty the current data row
       $("#"+update_id+" td:nth-child(1)").empty().append('<input class="form-control" id="update-name-input" style="width:70%;margin:0 auto;" type="text">');
       $("#"+update_id+" td:nth-child(2)").empty().append('<input class="form-control" id="update-dest-input" style="width:70%;margin:0 auto;" type="text">');
       $("#"+update_id+" td:nth-child(3)").empty().append('<input class="form-control" id="update-time-input" type="time">');
       $("#"+update_id+" td:nth-child(4)").empty().append('<input class="form-control" id="update-min-input" style="width:70%;margin:0 auto;" type="text">');
       $("#"+update_id+" td:nth-child(5)").empty();
       $("#"+update_id+" td:nth-child(6)").empty();
+      // Set the update data boolean to true
       $(this).attr("update-activated","true");
     }
-
+    // If currently being updated and submit is clicked 
     else {
+      // Get the updated train info
       newName = $("#update-name-input").val().trim();
       newDest = $("#update-dest-input").val().trim();
       newTime = $("#update-time-input").val();
       console.log(newTime);
       newRawfreq = $("#update-min-input").val().trim();
-          
+      // As long as the train name isnt blank then find the current train in database and replace    
       if (!(newName == "")) {
         jjdb.orderByChild('Train').equalTo(update_Name)
         .once('value').then(function(snapshot) {
@@ -146,6 +151,7 @@ $("tbody").on("click","#update", function(event) {
             });
         });
       }
+      // Update the screen in roughly a second
       setTimeout(function(){
         $("tbody").empty();
         readFromDb();
@@ -153,14 +159,15 @@ $("tbody").on("click","#update", function(event) {
     }
   });
 
+  // Capture the cancel button click
 $("tbody").on("click","#cancel", function(event) {
   event.preventDefault();
   
-  // Grab all the train info from the user inputs and assign to global train variables
+  // Grab the name of the train name to be deleted
   var del_name = $(this).attr("data-name");
   console.log(del_name);
   
-  // Code for the push and then calling the database function for printing all current trains
+  // Remove the selected train from the database
   jjdb.orderByChild('Train').equalTo(del_name)
     .once('value').then(function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
@@ -169,6 +176,7 @@ $("tbody").on("click","#cancel", function(event) {
     });
   });
   $(".show").remove();
+  // Update the screen in roughly a second
   setTimeout(function(){
     $("tbody").empty();
     readFromDb();
