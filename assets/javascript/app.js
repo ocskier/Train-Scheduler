@@ -140,7 +140,6 @@ $("tbody").on("click","#update", function(event) {
         jjdb.orderByChild('Train').equalTo(update_Name)
         .once('value').then(function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
-              jjdb.child(childSnapshot.key).remove();
               jjdb.child(newName).set  ({
                 Train: newName,
                 Destination: newDest,
