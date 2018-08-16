@@ -39,7 +39,7 @@ connectedRef.on("value", function(snap) {
 // A f(X) for passing a category query and get the json object from the Giphy API
 function queryGiphy (cat) {
 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q="+cat+"&api_key=dc6zaTOxFJmzC&limit=1&offset=1";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q="+cat+"&api_key=dc6zaTOxFJmzC&limit=1&offset=2";
 
     $.ajax({
         url: queryURL,
