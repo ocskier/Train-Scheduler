@@ -143,13 +143,15 @@ $("tbody").on("click","#update", function(event) {
               jjdb.child(childSnapshot.key).remove();
             });
         });
-        jjdb.child(newName).set  ({
-          Train: newName,
-          Destination: newDest,
-          StartTime: newTime,
-          Freq: newRawfreq,
-          dateAdded: firebase.database.ServerValue.TIMESTAMP
-        });
+        setTimeout(function() {
+          jjdb.child(newName).set  ({
+            Train: newName,
+            Destination: newDest,
+            StartTime: newTime,
+            Freq: newRawfreq,
+            dateAdded: firebase.database.ServerValue.TIMESTAMP
+          });
+        },500);
       }
       // Update the screen in roughly a second
       setTimeout(function(){
