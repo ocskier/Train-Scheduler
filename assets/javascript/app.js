@@ -54,7 +54,7 @@ function queryGiphy (cat) {
     });            
 }
 // Call the giphy function and pass it a specific train search
-queryGiphy("train+midnight");
+queryGiphy("train station");
 
 // Initialize the train data to empty at page load
 var name = "";
