@@ -231,7 +231,7 @@ function calcNextTrain (childSnap) {
     if (totalMinNow >= 0) {
       var nextTime = (totalMinNow+curMinAway) + firstTime
     } else {
-      var nextTime = moment(moment()).diff(moment("00:00","HH:mm")), "minutes")+curMinAway
+      var nextTime = moment(moment()).diff(moment("00:00","HH:mm"), "minutes")+curMinAway
     }
 
   // Convert the next train time to a moment of adding the next train time in mins to midnight  
