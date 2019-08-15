@@ -221,12 +221,18 @@ function calcNextTrain (childSnap) {
     var firstTime = moment(moment(childSnap.val().StartTime,"HH:mm")).diff(moment("00:00","HH:mm"),"minutes");
   
   // Calculate the current mins away by subtracting the remainder of (time elapsed from start/frequency) from the interval
-    var curMinAway = totalMinNow >= 0 ? childSnap.val().Freq-(totalMinNow % parseInt(childSnap.val().Freq)) :
-      abs(totalMinNow % parseInt(childSnap.val().Freq));
+    if (totalMinNow >= 0) {
+      var curMinAway = childSnap.val().Freq-(totalMinNow % parseInt(childSnap.val().Freq))
+    } else {
+      var curMinAway = abs(totalMinNow % parseInt(childSnap.val().Freq))
+    }
 
   // Set the next train time in minutes to the time elapsed from start plus mins away plus the first time it ran in mins
-    var nextTime = totalMinNow >= 0 ? (totalMinNow+curMinAway) + firstTime :
-      moment(moment()).diff(moment("00:00","HH:mm")), "minutes")+curMinAway;
+    if (totalMinNow >= 0) {
+      var nextTime = (totalMinNow+curMinAway) + firstTime
+    } else {
+      var nextTime = moment(moment()).diff(moment("00:00","HH:mm")), "minutes")+curMinAway
+    }
 
   // Convert the next train time to a moment of adding the next train time in mins to midnight  
     var nextTimeMom = moment("00:00","HH:mm").add(nextTime,'minutes').format('HH:mm');
