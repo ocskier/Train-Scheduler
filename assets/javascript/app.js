@@ -224,7 +224,7 @@ function calcNextTrain (childSnap) {
     if (totalMinNow >= 0) {
       var curMinAway = childSnap.val().Freq-(totalMinNow % parseInt(childSnap.val().Freq))
     } else {
-      var curMinAway = abs(totalMinNow % parseInt(childSnap.val().Freq))
+      var curMinAway = Math.abs(totalMinNow % parseInt(childSnap.val().Freq))
     }
 
   // Set the next train time in minutes to the time elapsed from start plus mins away plus the first time it ran in mins
