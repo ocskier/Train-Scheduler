@@ -36,10 +36,7 @@ connectedRef.on("value", function(snap) {
 
 // A f(X) for passing a category query and get the json object from the Giphy API
 function queryGiphy(cat) {
-  var queryURL =
-    "https://api.giphy.com/v1/gifs/search?q=" +
-    cat +
-    "&api_key=dc6zaTOxFJmzC&limit=1";
+  var queryURL =`https://api.giphy.com/v1/gifs/search?q=${cat}&api_key=dc6zaTOxFJmzC&limit=1`;
 
   $.ajax({
     url: queryURL,
@@ -48,7 +45,7 @@ function queryGiphy(cat) {
     // Write a new Gif card to window with the returned gif attached
     var newGifDiv = $('<div class="card gif-card" style="width:100%;">');
     newGifDiv.append(
-      '<img src="' +
+      '<img class= "img-responsive" src="' +
         response.data[0].images.original.url +
         '" frameBorder="0" class = "card-img-top my-img" data-animate="' +
         response.data[0].images.original.url +
@@ -61,6 +58,14 @@ function queryGiphy(cat) {
 }
 // Call the giphy function and pass it a specific train search
 queryGiphy("train station");
+
+var arrTrainKeys = ['Train','Destination','StartTime','Freq'];
+
+function handleArr (arr) {
+  for (x in arr) {
+    return x 
+  }
+}
 
 // Initialize the train data to empty at page load
 var newName = "";
@@ -211,6 +216,7 @@ $("tbody").on("click", "#cancel", function(event) {
 
 // A debugging f(x) for console logging each current database train object
 function consoleTrain(child) {
+  handleArr(arrTrainKeys)
   console.log(child.val().Train);
   console.log(child.val().Destination);
   console.log(child.val().StartTime);

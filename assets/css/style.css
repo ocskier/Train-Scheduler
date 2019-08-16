@@ -28,3 +28,7 @@ section {
     width: 80%;
     margin: 0 auto;
 }
+
+img {
+    min-height: 500px;
+}
