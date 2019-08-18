@@ -106,7 +106,6 @@ function removeTrainFromDB(name, cb) {
     .then(snapshot => {
       snapshot.forEach(function(childSnapshot) {
         jjdb.child(childSnapshot.key).remove();
-        console.log("Deleted Lillys!");
       });
       cb();
     });
