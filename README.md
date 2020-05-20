@@ -1,7 +1,7 @@
 # Train-Scheduler
 Train Scheduling using Firebase
 
-* [`index.html] (Train-Scheduler/index.html)
+* ![Train-Station/index.html](assets/images/May-20-202015-13-05.gif)
 
 ### Instructions
 
@@ -23,4 +23,4 @@ Train Scheduling using Firebase
 
 * Any train can be cancelled at anytime and the page will update in a second
 
-* This app can also be found in my portfolio @ https://ocskier.github.io/My-Mat-Portfolio
+* This app can also be found in my portfolio @ https://ocskier.github.io/JRJ-Folio
