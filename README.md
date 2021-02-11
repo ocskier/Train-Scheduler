@@ -1,7 +1,7 @@
 # Train-Scheduler
 Train Scheduling using Firebase
 
-* ![Train-Station/index.html](assets/images/May-20-202015-13-05.gif)
+![Train-Station/index.html](assets/images/May-20-202015-13-05.gif)
 
 ### Instructions
 
